@@ -21,6 +21,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'  # Use 'temurin' for Eclipse Adoptium (formerly AdoptOpenJDK)
 
+      # Step 3: Make the gradlew file executable
+      - name: Grant execute permission to gradlew
+        run: chmod +x ./gradlew
+
       # Step 3: Build the JAR file
       - name: Build JAR file using Gradle
         run: |
