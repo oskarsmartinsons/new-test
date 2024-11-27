@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'adoptopenjdk'  # Specify the JDK distribution (you can use 'zulu', 'amazon-corretto', etc.)
+          distribution: 'temurin'  # Use 'temurin' for Eclipse Adoptium (formerly AdoptOpenJDK)
 
       # Step 3: Build the JAR file
       - name: Build JAR file using Gradle
