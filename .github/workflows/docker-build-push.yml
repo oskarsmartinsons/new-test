@@ -50,6 +50,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # Set in repository secrets
           aws-region: ${{ secrets.AWS_REGION }} # Change to your AWS region (e.g., us-east-1)
 
+
       # Debug step
       - name: Debug AWS ECR variables
         run: |
