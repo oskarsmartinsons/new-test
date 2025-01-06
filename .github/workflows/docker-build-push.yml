@@ -50,6 +50,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # Set in repository secrets
           aws-region: ${{ secrets.AWS_REGION }} # Change to your AWS region (e.g., us-east-1)
 
+      # Debug step
+      - name: Debug AWS ECR variables
+        run: |
+          echo "AWS Account ID: ${{ secrets.AWS_ACCOUNT_ID }}"
+          echo "AWS access key ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
+          echo "AWS secret access key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          echo "AWS Region: ${{ secrets.AWS_REGION }}"
+          echo "Repository Name: ${{ secrets.REPO_NAME }}"
+
       # Step 8: Log in to Amazon ECR
       - name: Log in to Amazon ECR
         id: login-ecr
