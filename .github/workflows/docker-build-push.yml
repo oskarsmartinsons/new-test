@@ -42,42 +42,27 @@ jobs:
         run: |
           docker build -t myapp:latest .
 
-      # Step 7: Authenticate Docker to AWS ECR
-      - name: Authenticate Docker to AWS ECR
-        run: |
-          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-
-      # Step 8: Tag the image and push to ECR
-      - name: Tag and Push Docker image to ECR
-        run: |
-          docker tag myapp:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPO_NAME }}:latest
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPO_NAME }}:latest
-
-      # Step 9: Push the Docker image to DockerHub
-      - name: Push Docker Image to DockerHub
-        run: |
-          docker tag myapp:latest oskarsmartinsons/myapp:latest
-          docker push oskarsmartinsons/myapp:latest
-
-      # Step 10: Push Docker Image to AWS ECR
+      # Step 7: Configure AWS Credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} # Set in repository secrets
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # Set in repository secrets
-          aws-region: eu-west-3 # Change to your AWS region
+          aws-region: ${{ secrets.AWS_REGION }} # Change to your AWS region (e.g., us-east-1)
 
+      # Step 8: Log in to Amazon ECR
       - name: Log in to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Push to Amazon ECR
+      # Step 9: Tag the image and push to ECR
+      - name: Tag and Push Docker image to ECR
         run: |
-          # Replace with your AWS account ID and ECR repository name
-          AWS_ACCOUNT_ID=762233771900
-          IMAGE_NAME=myapp
-          REPO_NAME=my-ecr-repo
-          
-          # Tag and push image to ECR
-          docker tag myapp:latest $AWS_ACCOUNT_ID.dkr.ecr.eu-west-3.amazonaws.com/$REPO_NAME:latest
-          docker push $AWS_ACCOUNT_ID.dkr.ecr.eu-west-3.amazonaws.com/$REPO_NAME:latest
+          docker tag myapp:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPO_NAME }}:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPO_NAME }}:latest
+
+      # Step 10: Push Docker Image to DockerHub (optional)
+      - name: Push Docker Image to DockerHub
+        run: |
+          docker tag myapp:latest oskarsmartinsons/myapp:latest
+          docker push oskarsmartinsons/myapp:latest
