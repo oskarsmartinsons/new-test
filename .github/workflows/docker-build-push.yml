@@ -71,7 +71,7 @@ jobs:
           docker tag myapp:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPO_NAME }}:latest
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPO_NAME }}:latest
 
-      # Step 10: Push Docker Image to DockerHub (optional)
+      # Step 10: Push Docker Image to DockerHub  (optional)
       - name: Push Docker Image to DockerHub
         run: |
           docker tag myapp:latest oskarsmartinsons/myapp:latest
