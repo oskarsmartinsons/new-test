@@ -25,24 +25,35 @@ jobs:
       - name: Grant execute permission to gradlew
         run: chmod +x ./gradlew
 
-      # Step 3: Build the JAR file
+      # Step 4: Build the JAR file
       - name: Build JAR file using Gradle
         run: |
           ./gradlew build
 
-      # Step 4: Set up Docker
+      # Step 5: Set up Docker
       - name: Log in to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }} # Set in repository secrets
           password: ${{ secrets.DOCKER_PASSWORD }} # Set in repository secrets
 
-      # Step 5: Build the Docker image
+      # Step 6: Build the Docker image
       - name: Build Docker Image
         run: |
           docker build -t myapp:latest .
 
-      # Step 6: Push the Docker image to DockerHub
+      # Step 7: Authenticate Docker to AWS ECR
+      - name: Authenticate Docker to AWS ECR
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+      # Step 8: Tag the image and push to ECR
+      - name: Tag and Push Docker image to ECR
+        run: |
+          docker tag myapp:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPO_NAME }}:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPO_NAME }}:latest
+
+      # Step 9: Push the Docker image to DockerHub
       - name: Push Docker Image to DockerHub
         run: |
           docker tag myapp:latest oskarsmartinsons/myapp:latest
