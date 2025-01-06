@@ -65,7 +65,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      # Step 9: Tag the image and push to ECR
+      # Step 9: Tag the image  and push to ECR
       - name: Tag and Push Docker image to ECR
         run: |
           docker tag myapp:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.REPO_NAME }}:latest
