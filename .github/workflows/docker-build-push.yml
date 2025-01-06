@@ -59,7 +59,7 @@ jobs:
           docker tag myapp:latest oskarsmartinsons/myapp:latest
           docker push oskarsmartinsons/myapp:latest
 
-      # Step 7: Push Docker Image to AWS ECR
+      # Step 10: Push Docker Image to AWS ECR
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
@@ -79,5 +79,5 @@ jobs:
           REPO_NAME=my-ecr-repo
           
           # Tag and push image to ECR
-          docker tag myapp:latest $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:latest
-          docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:latest
+          docker tag myapp:latest $AWS_ACCOUNT_ID.dkr.ecr.eu-west-3.amazonaws.com/$REPO_NAME:latest
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.eu-west-3.amazonaws.com/$REPO_NAME:latest
